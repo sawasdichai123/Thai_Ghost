@@ -145,19 +145,19 @@
 
   /* real photographs, tinted to match the blood theme */
   .ghost-photo {
-    position: absolute; inset: 0; z-index: 2;
-    width: 100%; height: 100%; object-fit: cover;
-    filter: sepia(0.45) saturate(1.5) hue-rotate(-18deg) contrast(1.05) brightness(0.82);
+    position: relative; z-index: 2;
+    display: block; width: 100%; height: auto;
+    filter: contrast(1.06) brightness(0.92) saturate(1.04);
   }
   .photo-tint {
     position: absolute; inset: 0; z-index: 3; pointer-events: none;
     background:
-      radial-gradient(circle at 50% 35%, transparent 30%, rgba(20,3,5,0.55) 100%),
-      linear-gradient(180deg, rgba(120,10,10,0.22), rgba(10,2,3,0.65));
+      radial-gradient(circle at 50% 42%, transparent 55%, rgba(8,1,3,0.55) 100%),
+      linear-gradient(180deg, rgba(110,12,12,0.10), rgba(6,1,2,0.30));
     mix-blend-mode: multiply;
   }
-  /* photo-frames don't need the painted red moon backdrop */
-  .frame-inner.has-photo { background: #0a0203; }
+  /* photo-frames size to the image itself, no forced ratio / painted moon */
+  .frame-inner.has-photo { background: #0a0203; aspect-ratio: auto; }
 
   .media-note {
     margin-top: 1.1rem;
@@ -397,13 +397,13 @@
      GHOST DATA — English content, Thai name in parentheses
   ============================================================ */
   const ghosts = [
-    { no:"01", art:art.krasue,     en:"Krasue",        th:"กระสือ", tag:"The Floating Head",
+    { no:"01", art:art.krasue,     en:"Krasue",        th:"กระสือ", tag:"The Floating Head", photo:"images/krasue.png",
       desc:"One of the most terrifying spirits: a beautiful woman by day whose head detaches at night, floating through the dark with her glowing internal organs dangling beneath her neck. She hunts for blood and raw flesh. Villagers once planted thorny bushes around their homes to trap her hanging entrails." },
-    { no:"02", art:art.phiPop,     en:"Phi Pop",       th:"ผีปอบ", tag:"The Organ Eater",
+    { no:"02", art:art.phiPop,     en:"Phi Pop",       th:"ผีปอบ", tag:"The Organ Eater", photo:"images/phi-pop.png",
       desc:"A malevolent spirit that possesses a living person — often without their knowledge — and feeds on their raw internal organs from the inside. Believed to pass between people through black magic, the Phi Pop is deeply feared in the rural villages of northeastern Thailand (Isan)." },
-    { no:"03", art:art.phiAm,      en:"Phi Am",        th:"ผีอำ", tag:"The Night Presser",
+    { no:"03", art:art.phiAm,      en:"Phi Am",        th:"ผีอำ", tag:"The Night Presser", photo:"images/phi-am.png",
       desc:"The spirit blamed for sleep paralysis. When you wake in the night unable to move, breathe, or speak — feeling a heavy weight pressing on your chest — Thais say the Phi Am is sitting on you. A folk explanation for one of humanity's most universal and frightening experiences." },
-    { no:"04", art:art.nangRam,    en:"Phi Nang Ram",  th:"ผีนางรำ", tag:"The Dancing Spirit",
+    { no:"04", art:art.nangRam,    en:"Phi Nang Ram",  th:"ผีนางรำ", tag:"The Dancing Spirit", photo:"images/phi-nang-ram.png",
       desc:"The graceful ghost of a Thai classical dancer. Adorned in a glittering costume and a tall, pointed golden crown (chada), with her fingers bent impossibly far back, she performs the slow, elegant movements of traditional Thai dance — alone on an empty stage or near a shrine in the dead of night, to music only the dead can hear. Beautiful yet eerie, she is said to be a performer whose love for the dance kept her soul bound to the stage long after death." }
   ];
 
@@ -434,9 +434,9 @@
            <svg class="ghost-svg" viewBox="0 0 300 380" preserveAspectRatio="xMidYMid meet">${g.art}</svg>
          </div>`;
 
-    const note = g.photo
-      ? `<p class="media-note reveal d4"><span class="real">◆ REAL PHOTOGRAPH</span> — ${g.credit}</p>`
-      : `<p class="media-note reveal d4">✎ Original illustration — no free photograph of this spirit exists</p>`;
+    const note = g.credit
+      ? `<p class="media-note reveal d4">${g.credit}</p>`
+      : '';
 
     s.innerHTML = `
       <div class="portrait-card">
