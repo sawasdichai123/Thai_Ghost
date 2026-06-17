@@ -89,13 +89,14 @@
   .rule { height: 2px; width: 120px; background: linear-gradient(90deg, transparent, var(--blood-bright), transparent); margin: 1rem 0; }
   .pill { border: 1px solid rgba(193,18,31,0.4); background: rgba(139,0,0,0.12); }
 
-  /* ---------- Portrait card layout ---------- */
+  /* ---------- Portrait card layout (image left, text right) ---------- */
   .portrait-card {
     display: flex; gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: center; justify-content: center; flex-wrap: wrap;
     max-width: 70rem; width: 100%;
   }
   .info { flex: 1 1 340px; min-width: 280px; max-width: 36rem; text-align: left; }
+
 
   /* ---------- Ornate picture frame ---------- */
   .frame {
@@ -229,7 +230,7 @@
           Spirits of Thailand
         </h1>
         <p class="thai reveal d2" style="font-size: clamp(1.2rem, 3.5vh, 2rem); color:#e7c9c9; margin-top:.4rem;">
-          ผีไทย — ตำนานความเชื่อแห่งสยาม
+          Thai Ghosts — Legends and Beliefs of Siam
         </p>
         <div class="rule reveal d2" style="margin-left:auto;margin-right:auto;"></div>
         <p class="reveal d3" style="font-size: clamp(1rem, 2.3vh, 1.3rem); color:#bdb2ab; max-width:42rem; margin:1rem auto 0; line-height:1.6;">
@@ -438,8 +439,9 @@
       ? `<p class="media-note reveal d4">${g.credit}</p>`
       : '';
 
+    const cardClass = 'portrait-card';
     s.innerHTML = `
-      <div class="portrait-card">
+      <div class="${cardClass}">
         <div class="frame reveal">
           ${corners}
           ${media}
