@@ -209,6 +209,131 @@
   .hint { position: fixed; bottom: 24px; right: 26px; z-index: 20; font-size: .8rem; letter-spacing: 1px; color: rgba(207,199,192,0.4); }
 
   ::selection { background: rgba(193,18,31,0.5); color: #fff; }
+
+  /* ===================== FOOD SLIDES ===================== */
+  .food-card {
+    background: rgba(14, 10, 4, 0.65);
+    border: 1px solid rgba(201,164,76,0.3);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.65), inset 0 0 60px rgba(201,164,76,0.04);
+    border-radius: 20px;
+    padding: clamp(1.4rem, 3.5vh, 2.6rem) clamp(1.6rem, 4vw, 3.2rem);
+    max-width: 68rem; width: 100%;
+  }
+  .gold-text {
+    background: linear-gradient(180deg, #f5d98b 0%, #c9a44c 50%, #7a5c1a 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .gold-rule {
+    height: 1px; width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201,164,76,0.6), transparent);
+    margin: .9rem 0;
+  }
+  .food-section-label {
+    display: inline-block;
+    border: 1px solid rgba(201,164,76,0.45);
+    background: rgba(201,164,76,0.08);
+    color: rgba(201,164,76,0.9);
+    border-radius: 999px;
+    padding: .25rem 1rem;
+    font-size: .75rem; letter-spacing: 2.5px;
+    font-family: 'Cinzel', serif;
+  }
+
+  /* vocab grid */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .7rem;
+    margin-top: .8rem;
+  }
+  .vocab-item {
+    background: rgba(201,164,76,0.07);
+    border: 1px solid rgba(201,164,76,0.18);
+    border-radius: 10px;
+    padding: .65rem 1rem;
+    display: flex; flex-direction: column; gap: .15rem;
+  }
+  .vocab-item .v-en {
+    font-size: clamp(1.05rem, 2.4vh, 1.35rem);
+    color: #f0e6c8; font-weight: 600; letter-spacing: .2px;
+  }
+  .vocab-item .v-thai {
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: clamp(.8rem, 1.8vh, 1rem);
+    color: rgba(207,199,192,0.55);
+  }
+  .vocab-item .v-badge {
+    font-size: .7rem; letter-spacing: 1.5px;
+    color: rgba(201,164,76,0.7);
+    font-family: 'Cinzel', serif;
+    margin-top: .1rem;
+  }
+
+  /* spice heat dots */
+  .heat-dots { display: flex; gap: 4px; margin-top: .25rem; }
+  .heat-dots span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(201,164,76,0.2);
+    border: 1px solid rgba(201,164,76,0.3);
+  }
+  .heat-dots span.on { background: #c1121f; border-color: #c1121f; box-shadow: 0 0 4px #c1121f; }
+
+  /* sweet % bar */
+  .sweet-bar-wrap { display: flex; flex-direction: column; gap: .15rem; margin-top: .25rem; }
+  .sweet-bar-track {
+    height: 5px; border-radius: 99px;
+    background: rgba(201,164,76,0.15); overflow: hidden;
+  }
+  .sweet-bar-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, #c9a44c, #f5d98b);
+  }
+
+  /* fact box */
+  .fact-box {
+    margin-top: 1rem;
+    background: rgba(201,164,76,0.07);
+    border-left: 3px solid rgba(201,164,76,0.55);
+    border-radius: 0 10px 10px 0;
+    padding: .7rem 1rem;
+    font-size: clamp(.85rem, 1.9vh, 1.05rem);
+    color: rgba(207,199,192,0.75);
+    line-height: 1.6;
+  }
+  .fact-box strong { color: rgba(201,164,76,0.95); }
+
+  /* phrase table */
+  .phrase-table { width: 100%; border-collapse: collapse; margin-top: .8rem; }
+  .phrase-table tr { border-bottom: 1px solid rgba(201,164,76,0.12); }
+  .phrase-table tr:last-child { border-bottom: none; }
+  .phrase-table td {
+    padding: .6rem .5rem;
+    font-size: clamp(.9rem, 2vh, 1.1rem);
+    vertical-align: middle;
+  }
+  .phrase-table td:first-child {
+    color: #f0e6c8; font-weight: 600;
+    width: 50%; padding-right: 1rem;
+  }
+  .phrase-table td:nth-child(2) { color: rgba(201,164,76,0.7); width: 5%; text-align: center; font-size: 1rem; }
+  .phrase-table td:last-child { color: rgba(207,199,192,0.7); }
+
+  /* two-column food layout */
+  .food-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+  }
+  @media (max-width: 640px) { .food-cols { grid-template-columns: 1fr; } }
+  .food-col-head {
+    font-size: clamp(.95rem, 2.1vh, 1.15rem);
+    font-family: 'Cinzel', serif;
+    color: rgba(201,164,76,0.85);
+    letter-spacing: 2px;
+    margin-bottom: .5rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
 </style>
 </head>
 
@@ -239,13 +364,203 @@
         </p>
         <div class="reveal d4" style="margin-top:2rem;">
           <span class="pill serif-title" style="padding:.5rem 1.4rem; border-radius:999px; letter-spacing:2px; font-size:.85rem;">
-            4 LEGENDARY SPIRITS →
+            4 SPIRITS + FOOD CULTURE →
           </span>
         </div>
       </div>
     </section>
 
     <!-- Ghost slides injected by JS -->
+
+    <!-- ===== FOOD INTRO SLIDE ===== -->
+    <section class="slide" data-name="FoodIntro">
+      <div class="text-center max-w-3xl">
+        <div class="emblem reveal" style="filter:drop-shadow(0 0 28px rgba(201,164,76,0.5))">🍜</div>
+        <h2 class="display gold-text reveal d1" style="font-size:clamp(2.4rem,7vh,4.5rem); margin-top:1rem; line-height:1.1;">
+          Ordering Food<br>in Thailand
+        </h2>
+        <p class="thai reveal d2" style="font-size:clamp(1.2rem,3vh,1.7rem); color:#f0e6c8; margin-top:.4rem;">
+          การสั่งอาหารในประเทศไทย
+        </p>
+        <div class="gold-rule reveal d2" style="width:140px;margin:1rem auto;"></div>
+        <p class="reveal d3" style="font-size:clamp(1rem,2.2vh,1.25rem); color:#bdb2ab; max-width:38rem; margin:.8rem auto 0; line-height:1.65;">
+          Thai street vendors and restaurants expect you to customise
+          your order — knowing the right words turns a meal into a real
+          cultural experience.
+        </p>
+        <div class="reveal d4" style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem;">
+          <span class="food-section-label">🌶 SPICE LEVELS</span>
+          <span class="food-section-label">🍵 SWEETNESS LEVELS</span>
+          <span class="food-section-label">💬 KEY PHRASES</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SPICE LEVELS SLIDE ===== -->
+    <section class="slide" data-name="SpiceLevels">
+      <div class="food-card reveal">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.3rem;flex-wrap:wrap;">
+          <span class="food-section-label">🌶 SPICE LEVELS — ระดับความเผ็ด</span>
+        </div>
+        <div style="margin:.6rem 0 .2rem;">
+          <span style="font-size:clamp(.85rem,1.9vh,1rem);color:rgba(201,164,76,0.7);letter-spacing:1px;font-family:'Cinzel',serif;">EXAMPLE DISH</span>
+        </div>
+        <div style="margin-bottom:1rem;">
+          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:#f0e6c8;font-weight:700;">Basil Stir-Fry with Minced Pork</span>
+          <span style="font-family:'Noto Sans Thai',sans-serif;font-size:clamp(.9rem,2vh,1.1rem);color:rgba(207,199,192,0.55);margin-left:.6rem;">(กระเพราหมูสับ)</span>
+        </div>
+        <div class="gold-rule"></div>
+        <div class="vocab-grid">
+          <div class="vocab-item">
+            <div class="v-en">Not spicy</div>
+            <div class="v-thai">ไม่เผ็ด</div>
+            <div class="heat-dots"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="v-badge">LEVEL 0</div>
+          </div>
+          <div class="vocab-item">
+            <div class="v-en">A little spicy</div>
+            <div class="v-thai">เผ็ดน้อย</div>
+            <div class="heat-dots"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+            <div class="v-badge">LEVEL 1</div>
+          </div>
+          <div class="vocab-item">
+            <div class="v-en">Medium spicy</div>
+            <div class="v-thai">เผ็ดกลางๆ</div>
+            <div class="heat-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+            <div class="v-badge">LEVEL 3</div>
+          </div>
+          <div class="vocab-item">
+            <div class="v-en">Very spicy</div>
+            <div class="v-thai">เผ็ดมาก</div>
+            <div class="heat-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+            <div class="v-badge">LEVEL 4</div>
+          </div>
+          <div class="vocab-item">
+            <div class="v-en">Extra spicy</div>
+            <div class="v-thai">เผ็ดมากที่สุด</div>
+            <div class="heat-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+            <div class="v-badge">LEVEL 5</div>
+          </div>
+        </div>
+        <div class="fact-box">
+          📌 <strong>Fact:</strong> Thai vendors always expect a spice request — if you say nothing, you may get the full default heat.
+          <strong>"ไม่เผ็ด"</strong> (not spicy) is the safest starting point for beginners!
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SWEETNESS LEVELS SLIDE ===== -->
+    <section class="slide" data-name="SweetnessLevels">
+      <div class="food-card reveal">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.3rem;flex-wrap:wrap;">
+          <span class="food-section-label">🍵 SWEETNESS LEVELS — ระดับความหวาน</span>
+        </div>
+        <div style="margin:.6rem 0 .2rem;">
+          <span style="font-size:clamp(.85rem,1.9vh,1rem);color:rgba(201,164,76,0.7);letter-spacing:1px;font-family:'Cinzel',serif;">EXAMPLE DRINK</span>
+        </div>
+        <div style="margin-bottom:.9rem;">
+          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:#f0e6c8;font-weight:700;">Thai Iced Tea</span>
+          <span style="font-family:'Noto Sans Thai',sans-serif;font-size:clamp(.9rem,2vh,1.1rem);color:rgba(207,199,192,0.55);margin-left:.6rem;">(ชาไทย)</span>
+        </div>
+        <div class="gold-rule"></div>
+        <div class="food-cols">
+          <div>
+            <div class="food-col-head">🗣 Word System <span style="font-family:'Noto Sans Thai',sans-serif;font-size:.9rem;">(ร้านข้างทาง)</span></div>
+            <div class="vocab-grid" style="grid-template-columns:1fr;">
+              <div class="vocab-item">
+                <div class="v-en">No sugar</div>
+                <div class="v-thai">ไม่หวาน</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:0%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Less sweet</div>
+                <div class="v-thai">หวานน้อย</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:30%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Normal sweet</div>
+                <div class="v-thai">หวานปกติ</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:65%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Very sweet</div>
+                <div class="v-thai">หวานมาก</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:100%"></div></div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="food-col-head">📊 % System <span style="font-family:'Noto Sans Thai',sans-serif;font-size:.9rem;">(ร้านชานม / บอบาชา)</span></div>
+            <div class="vocab-grid" style="grid-template-columns:1fr;">
+              <div class="vocab-item">
+                <div class="v-en">No sugar at all — 0%</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:0%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Barely sweet — 25%</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:25%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Half sweet — 50%</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:50%"></div></div></div>
+              </div>
+              <div class="vocab-item">
+                <div class="v-en">Very sweet — 75% / Full — 100%</div>
+                <div class="sweet-bar-wrap"><div class="sweet-bar-track"><div class="sweet-bar-fill" style="width:100%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fact-box">
+          📌 <strong>Fact:</strong> Traditional street stalls use the <strong>word system</strong>. Modern bubble tea chains (ชานม, บอบาชา) switched to the <strong>% system</strong> — both are widely understood in Thailand.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KEY PHRASES SLIDE ===== -->
+    <section class="slide" data-name="KeyPhrases">
+      <div class="food-card reveal">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap;">
+          <span class="food-section-label">💬 KEY ORDERING PHRASES</span>
+        </div>
+        <div class="gold-rule"></div>
+        <table class="phrase-table">
+          <tr>
+            <td>"One ___ please" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(most common opener)</span></td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ขอ ___ หนึ่งที่ครับ/ค่ะ</td>
+          </tr>
+          <tr>
+            <td>"Can I have it a little less spicy?"</td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">เผ็ดน้อยได้ไหม</td>
+          </tr>
+          <tr>
+            <td>"No vegetables please"</td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ไม่เอาผัก</td>
+          </tr>
+          <tr>
+            <td>"Please bag it" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(takeaway)</span></td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ใส่ถุงด้วยครับ/ค่ะ</td>
+          </tr>
+          <tr>
+            <td>"How much is it?"</td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">เท่าไหร่ครับ/ค่ะ</td>
+          </tr>
+          <tr>
+            <td>"It's delicious!" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(vendors love this 😄)</span></td>
+            <td>→</td>
+            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">อร่อยมากครับ/ค่ะ</td>
+          </tr>
+        </table>
+        <div class="fact-box" style="margin-top:1rem;">
+          📌 <strong>Tip:</strong> Men end sentences with <strong>ครับ</strong> (krap) and women with <strong>ค่ะ</strong> (kha) — these are polite particles that show respect and are always appreciated.
+        </div>
+      </div>
+    </section>
 
     <!-- ===== CLOSING SLIDE ===== -->
     <section class="slide" data-name="End">
@@ -259,9 +574,9 @@
         </p>
         <div class="rule reveal d2" style="margin-left:auto;margin-right:auto;"></div>
         <p class="reveal d3" style="font-size:1.15rem; color:#bdb2ab; line-height:1.7; margin-top:1rem;">
-          These ghosts are more than horror stories — they carry Thai values,
-          beliefs about karma, and the bond between the living and the dead.
-          <br />Thank you for exploring Thai culture with us. 🇹🇭
+          From ancient spirits to street food stalls — Thai culture is rich,
+          layered, and full of stories waiting to be discovered.
+          <br />Thank you for exploring Thailand with us. 🇹🇭
         </p>
       </div>
     </section>
