@@ -11,14 +11,22 @@
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=Noto+Sans+Thai:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
 <style>
   :root {
-    --blood: #8b0000;
-    --blood-bright: #c1121f;
-    --gold: #c9a44c;
-    --ash: #cfc7c0;
+    --bg:        #0c0e12;
+    --bg-2:      #0f1217;
+    --surface:   #14171e;
+    --surface-2: #1a1e26;
+    --line:      rgba(255,255,255,0.08);
+    --line-2:    rgba(255,255,255,0.14);
+    --text:      #e9ebf0;
+    --muted:     #9aa1ad;
+    --faint:     #6b727f;
+    --accent:    #ff6a3d;
+    --accent-2:  #ff8a5c;
+    --accent-soft: rgba(255,106,61,0.12);
   }
 
   * { box-sizing: border-box; }
@@ -26,346 +34,293 @@
   html, body {
     margin: 0; padding: 0; height: 100%;
     overflow: hidden;
-    background: #050505;
-    font-family: 'Crimson Pro', 'Noto Sans Thai', serif;
-    color: var(--ash);
+    background: var(--bg);
+    font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
   }
 
-  .thai { font-family: 'Noto Sans Thai', sans-serif; }
-  .display { font-family: 'Cinzel Decorative', serif; }
-  .serif-title { font-family: 'Cinzel', serif; }
+  .thai    { font-family: 'Noto Sans Thai', sans-serif; }
+  .display { font-family: 'Space Grotesk', sans-serif; }
 
-  /* ---------- Background atmosphere ---------- */
-  .bg-atmosphere {
+  /* ---------- Background ---------- */
+  .bg-base {
     position: fixed; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse at 20% 10%, rgba(120, 0, 0, 0.35), transparent 55%),
-      radial-gradient(ellipse at 85% 90%, rgba(60, 0, 0, 0.45), transparent 55%),
-      radial-gradient(circle at 50% 50%, #150305 0%, #080203 55%, #000 100%);
+      radial-gradient(ellipse 80% 50% at 15% -5%, rgba(255,106,61,0.10), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 105%, rgba(255,106,61,0.06), transparent 55%),
+      linear-gradient(180deg, var(--bg-2), var(--bg) 60%);
   }
-  .fog {
-    position: fixed; inset: -50%; z-index: 1; pointer-events: none;
-    background:
-      radial-gradient(circle at 30% 40%, rgba(139,0,0,0.10), transparent 40%),
-      radial-gradient(circle at 70% 60%, rgba(80,0,0,0.10), transparent 40%);
-    filter: blur(40px);
-    animation: drift 26s ease-in-out infinite alternate;
+  /* faint editorial grid */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 40%, #000 40%, transparent 100%);
   }
-  @keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(4%,-3%) scale(1.15)} }
-  .vignette { position: fixed; inset: 0; z-index: 2; pointer-events: none; box-shadow: inset 0 0 220px 60px rgba(0,0,0,0.9); }
 
   /* ---------- Slides ---------- */
   .deck { position: relative; z-index: 3; height: 100vh; width: 100vw; }
   .slide {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    padding: 3vh 5vw;
-    opacity: 0; transform: translateX(60px) scale(0.98);
-    transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+    padding: 7vh 6vw;
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1);
     pointer-events: none;
   }
-  .slide.active { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
-  .slide.prev { transform: translateX(-60px) scale(0.98); }
+  .slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-  .slide .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .slide .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
   .slide.active .reveal { opacity: 1; transform: translateY(0); }
-  .slide.active .reveal.d1 { transition-delay: .15s; }
-  .slide.active .reveal.d2 { transition-delay: .30s; }
-  .slide.active .reveal.d3 { transition-delay: .45s; }
-  .slide.active .reveal.d4 { transition-delay: .60s; }
+  .slide.active .reveal.d1 { transition-delay: .08s; }
+  .slide.active .reveal.d2 { transition-delay: .18s; }
+  .slide.active .reveal.d3 { transition-delay: .28s; }
+  .slide.active .reveal.d4 { transition-delay: .38s; }
 
-  .emblem {
-    font-size: clamp(5rem, 16vh, 11rem); line-height: 1;
-    filter: drop-shadow(0 0 30px rgba(193,18,31,0.55));
-    animation: float 6s ease-in-out infinite;
+  /* ---------- Shared typography helpers ---------- */
+  .kicker {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .72rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
   }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
-
-  .blood-text {
-    background: linear-gradient(180deg, #ff5252 0%, var(--blood-bright) 45%, #5e0000 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    text-shadow: 0 0 40px rgba(193,18,31,0.35);
+  .kicker::before {
+    content: ""; width: 26px; height: 1px; background: var(--accent); display: inline-block;
   }
-  .rule { height: 2px; width: 120px; background: linear-gradient(90deg, transparent, var(--blood-bright), transparent); margin: 1rem 0; }
-  .pill { border: 1px solid rgba(193,18,31,0.4); background: rgba(139,0,0,0.12); }
+  .chip {
+    display: inline-flex; align-items: center; gap: .5rem;
+    border: 1px solid var(--line-2); background: rgba(255,255,255,0.03);
+    border-radius: 999px; padding: .4rem 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .74rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+  .accent-text { color: var(--accent); }
+  .rule { height: 1px; width: 72px; background: var(--accent); opacity: .85; margin: 1.1rem 0; }
+  .lead { color: var(--muted); line-height: 1.75; }
 
-  /* ---------- Portrait card layout (image left, text right) ---------- */
+  /* ---------- Ghost (editorial) layout ---------- */
   .portrait-card {
-    display: flex; gap: clamp(1.5rem, 4vw, 3.5rem);
+    display: flex; gap: clamp(2rem, 6vw, 5rem);
     align-items: center; justify-content: center; flex-wrap: wrap;
-    max-width: 70rem; width: 100%;
+    max-width: 74rem; width: 100%;
   }
-  .info { flex: 1 1 340px; min-width: 280px; max-width: 36rem; text-align: left; }
+  .info { flex: 1 1 360px; min-width: 280px; max-width: 38rem; text-align: left; }
 
+  .ghost-no {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.4rem, 7vh, 4rem); font-weight: 700; line-height: 1;
+    color: transparent; -webkit-text-stroke: 1.2px var(--line-2);
+    margin-bottom: .9rem;
+  }
+  .ghost-name {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: clamp(2.6rem, 8vh, 4.6rem); line-height: 1.02;
+    letter-spacing: -1px; color: var(--text); margin: .2rem 0 0;
+  }
+  .ghost-thai {
+    font-size: clamp(1.2rem, 3.2vh, 1.7rem); color: var(--accent); font-weight: 500; margin: .35rem 0 0;
+  }
+  .ghost-desc { font-size: clamp(1rem, 2.2vh, 1.18rem); color: var(--muted); line-height: 1.75; }
 
-  /* ---------- Ornate picture frame ---------- */
+  /* ---------- Minimal frame ---------- */
   .frame {
-    flex: 0 0 auto;
-    position: relative;
-    width: clamp(220px, 30vw, 320px);
-    padding: 14px;
-    border-radius: 6px;
-    background:
-      linear-gradient(145deg, #6b5320, #3a2c10 40%, #1c1408 70%, #4a3815);
-    box-shadow:
-      0 25px 60px rgba(0,0,0,0.75),
-      0 0 50px rgba(193,18,31,0.25),
-      inset 0 0 0 2px rgba(201,164,76,0.5),
-      inset 0 0 0 10px rgba(20,8,4,0.9);
-  }
-  .frame::before {
-    /* inner gold bevel line */
-    content: ""; position: absolute; inset: 11px;
-    border: 1px solid rgba(201,164,76,0.55);
-    border-radius: 3px; pointer-events: none; z-index: 4;
+    flex: 0 0 auto; position: relative;
+    width: clamp(230px, 32vw, 340px);
+    padding: 8px; border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 70px -28px rgba(0,0,0,0.75);
   }
   .frame-inner {
-    position: relative;
-    border-radius: 3px;
-    overflow: hidden;
+    position: relative; border-radius: 12px; overflow: hidden;
     aspect-ratio: 300 / 360;
     background:
-      radial-gradient(circle at 50% 38%, rgba(255,120,80,0.55) 0%, rgba(150,20,20,0.5) 16%, rgba(40,5,8,0.95) 46%, #0a0203 75%);
-  }
-  /* drifting mist at the base of each portrait */
-  .frame-inner::after {
-    content: ""; position: absolute; left: -20%; right: -20%; bottom: -10%; height: 45%;
-    background: radial-gradient(ellipse at 50% 100%, rgba(120,15,15,0.55), transparent 70%);
-    filter: blur(8px);
-    animation: drift 18s ease-in-out infinite alternate;
+      radial-gradient(circle at 50% 35%, var(--surface-2), #0a0c10 78%);
   }
   .ghost-svg {
-    position: relative; z-index: 2;
-    width: 100%; height: 100%; display: block;
-    filter: drop-shadow(0 0 7px rgba(193,18,31,0.7));
+    position: relative; z-index: 2; width: 100%; height: 100%; display: block;
   }
-  .ghost-svg .fill { fill: #060202; }
-  .ghost-svg .line { fill: none; stroke: #060202; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
-  .ghost-svg .glow { fill: #ff3b3b; filter: drop-shadow(0 0 4px #ff2a2a); }
-  .ghost-svg .bone { fill: #d6cdc6; }
+  .ghost-svg .fill { fill: var(--text); }
+  .ghost-svg .line { fill: none; stroke: var(--text); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .ghost-svg .glow { fill: var(--accent); }
+  .ghost-svg .bone { fill: #c7cdd6; }
 
-  /* real photographs, tinted to match the blood theme */
   .ghost-photo {
-    position: relative; z-index: 2;
-    display: block; width: 100%; height: auto;
-    filter: contrast(1.06) brightness(0.92) saturate(1.04);
+    position: relative; z-index: 2; display: block; width: 100%; height: auto;
+    filter: contrast(1.04) brightness(0.98) saturate(1.02);
   }
   .photo-tint {
     position: absolute; inset: 0; z-index: 3; pointer-events: none;
-    background:
-      radial-gradient(circle at 50% 42%, transparent 55%, rgba(8,1,3,0.55) 100%),
-      linear-gradient(180deg, rgba(110,12,12,0.10), rgba(6,1,2,0.30));
-    mix-blend-mode: multiply;
+    background: linear-gradient(180deg, transparent 55%, rgba(8,10,14,0.55) 100%);
   }
-  /* photo-frames size to the image itself, no forced ratio / painted moon */
-  .frame-inner.has-photo { background: #0a0203; aspect-ratio: auto; }
+  .frame-inner.has-photo { background: #0a0c10; aspect-ratio: auto; }
 
-  .media-note {
-    margin-top: 1.1rem;
-    font-size: .72rem; letter-spacing: .5px;
-    color: rgba(207,199,192,0.45);
-    font-style: italic;
-  }
-  .media-note .real { color: rgba(201,164,76,0.85); font-style: normal; letter-spacing: 1px; }
-
-  /* corner flourishes */
-  .corner { position: absolute; width: 46px; height: 46px; z-index: 5; opacity: 0.9; }
-  .corner svg { width: 100%; height: 100%; }
-  .corner path { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
-  .corner.tl { top: 4px; left: 4px; }
-  .corner.tr { top: 4px; right: 4px; transform: scaleX(-1); }
-  .corner.bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
-  .corner.br { bottom: 4px; right: 4px; transform: scale(-1,-1); }
-
-  /* nameplate on frame */
+  /* number badge */
   .nameplate {
-    position: absolute; z-index: 6;
-    bottom: -16px; left: 50%; transform: translateX(-50%);
-    padding: .3rem 1.2rem; border-radius: 4px;
-    background: linear-gradient(145deg, #4a3815, #1c1408);
-    border: 1px solid rgba(201,164,76,0.6);
-    color: var(--gold); letter-spacing: 3px; font-size: .8rem;
-    white-space: nowrap;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+    position: absolute; z-index: 6; top: 16px; left: 16px;
+    padding: .3rem .8rem; border-radius: 999px;
+    background: rgba(12,14,18,0.72); backdrop-filter: blur(6px);
+    border: 1px solid var(--line-2);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent); letter-spacing: 2px; font-size: .72rem; font-weight: 600;
   }
+
+  .media-note { margin-top: 1.1rem; font-size: .72rem; letter-spacing: .5px; color: var(--faint); }
+  .media-note .real { color: var(--accent); }
 
   /* ---------- Navigation UI ---------- */
   .nav-btn {
     position: fixed; top: 50%; transform: translateY(-50%); z-index: 20;
-    width: 56px; height: 56px; display: grid; place-items: center;
-    border-radius: 999px; border: 1px solid rgba(193,18,31,0.4);
-    background: rgba(15,5,6,0.6); color: var(--ash); font-size: 1.6rem;
-    cursor: pointer; transition: all .25s ease; backdrop-filter: blur(4px);
+    width: 46px; height: 46px; display: grid; place-items: center;
+    border-radius: 12px; border: 1px solid var(--line-2);
+    background: rgba(20,23,30,0.6); color: var(--text); font-size: 1.3rem;
+    cursor: pointer; transition: all .2s ease; backdrop-filter: blur(6px);
   }
-  .nav-btn:hover { background: rgba(139,0,0,0.5); box-shadow: 0 0 24px rgba(193,18,31,0.5); }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
   #prevBtn { left: 22px; } #nextBtn { right: 22px; }
 
-  .progress { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 10px; align-items: center; }
-  .dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(207,199,192,0.25); cursor: pointer; transition: all .3s ease; }
-  .dot.active { background: var(--blood-bright); box-shadow: 0 0 12px var(--blood-bright); transform: scale(1.4); }
+  .progress { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 8px; align-items: center; }
+  .dot { width: 26px; height: 3px; border-radius: 99px; background: rgba(255,255,255,0.14); cursor: pointer; transition: all .3s ease; }
+  .dot.active { background: var(--accent); width: 40px; }
 
-  .counter { position: fixed; top: 22px; right: 26px; z-index: 20; font-size: .95rem; letter-spacing: 2px; color: rgba(207,199,192,0.6); }
-  .brandmark { position: fixed; top: 22px; left: 26px; z-index: 20; font-size: .95rem; letter-spacing: 3px; color: rgba(193,18,31,0.8); }
-  .hint { position: fixed; bottom: 24px; right: 26px; z-index: 20; font-size: .8rem; letter-spacing: 1px; color: rgba(207,199,192,0.4); }
+  .counter { position: fixed; top: 24px; right: 28px; z-index: 20; font-family: 'Space Grotesk', sans-serif; font-size: .82rem; letter-spacing: 2px; color: var(--muted); }
+  .counter b { color: var(--text); font-weight: 600; }
+  .brandmark { position: fixed; top: 24px; left: 28px; z-index: 20; font-family: 'Space Grotesk', sans-serif; font-size: .82rem; letter-spacing: 3px; color: var(--text); font-weight: 600; }
+  .brandmark span { color: var(--accent); }
+  .hint { position: fixed; bottom: 24px; right: 28px; z-index: 20; font-size: .74rem; letter-spacing: 1px; color: var(--faint); }
 
-  ::selection { background: rgba(193,18,31,0.5); color: #fff; }
+  ::selection { background: var(--accent); color: #0c0e12; }
 
-  /* ===================== FOOD SLIDES ===================== */
+  /* ===================== FOOD / CONTENT CARD SLIDES ===================== */
   .food-card {
-    background: rgba(14, 10, 4, 0.65);
-    border: 1px solid rgba(201,164,76,0.3);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.65), inset 0 0 60px rgba(201,164,76,0.04);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 20px;
-    padding: clamp(1.4rem, 3.5vh, 2.6rem) clamp(1.6rem, 4vw, 3.2rem);
-    max-width: 68rem; width: 100%;
+    box-shadow: 0 40px 70px -30px rgba(0,0,0,0.7);
+    padding: clamp(1.6rem, 3.6vh, 2.8rem) clamp(1.6rem, 4vw, 3.2rem);
+    max-width: 70rem; width: 100%;
   }
-  .gold-text {
-    background: linear-gradient(180deg, #f5d98b 0%, #c9a44c 50%, #7a5c1a 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .gold-rule {
-    height: 1px; width: 100%;
-    background: linear-gradient(90deg, transparent, rgba(201,164,76,0.6), transparent);
-    margin: .9rem 0;
-  }
+  .gold-text { color: var(--text); }
+  .gold-rule { height: 1px; width: 100%; background: var(--line); margin: 1rem 0; }
   .food-section-label {
-    display: inline-block;
-    border: 1px solid rgba(201,164,76,0.45);
-    background: rgba(201,164,76,0.08);
-    color: rgba(201,164,76,0.9);
+    display: inline-flex; align-items: center; gap: .5rem;
+    border: 1px solid var(--line-2);
+    background: var(--accent-soft);
+    color: var(--accent);
     border-radius: 999px;
-    padding: .25rem 1rem;
-    font-size: .75rem; letter-spacing: 2.5px;
-    font-family: 'Cinzel', serif;
+    padding: .3rem 1rem;
+    font-size: .74rem; letter-spacing: 2px;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600;
   }
 
   /* vocab grid */
-  .vocab-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: .7rem;
-    margin-top: .8rem;
-  }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: .7rem; margin-top: .9rem; }
   .vocab-item {
-    background: rgba(201,164,76,0.07);
-    border: 1px solid rgba(201,164,76,0.18);
-    border-radius: 10px;
-    padding: .65rem 1rem;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: .75rem 1rem;
+    display: flex; flex-direction: column; gap: .2rem;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .vocab-item:hover { border-color: var(--line-2); transform: translateY(-2px); }
+  .vocab-item .v-en   { font-size: clamp(1.02rem, 2.3vh, 1.28rem); color: var(--text); font-weight: 600; }
+  .vocab-item .v-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: clamp(.82rem, 1.8vh, 1rem); color: var(--faint); }
+  .vocab-item .v-badge { font-size: .68rem; letter-spacing: 1.5px; color: var(--accent); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-top: .1rem; }
+
+  /* buzzword tiles */
+  .buzz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .7rem; margin-top: .9rem; }
+  .buzz-item {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: .8rem 1rem;
     display: flex; flex-direction: column; gap: .15rem;
+    transition: border-color .2s ease, transform .2s ease;
   }
-  .vocab-item .v-en {
-    font-size: clamp(1.05rem, 2.4vh, 1.35rem);
-    color: #f0e6c8; font-weight: 600; letter-spacing: .2px;
-  }
-  .vocab-item .v-thai {
-    font-family: 'Noto Sans Thai', sans-serif;
-    font-size: clamp(.8rem, 1.8vh, 1rem);
-    color: rgba(207,199,192,0.55);
-  }
-  .vocab-item .v-badge {
-    font-size: .7rem; letter-spacing: 1.5px;
-    color: rgba(201,164,76,0.7);
-    font-family: 'Cinzel', serif;
-    margin-top: .1rem;
-  }
+  .buzz-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .buzz-head { display: flex; align-items: baseline; gap: .55rem; flex-wrap: wrap; }
+  .buzz-thai { font-family: 'Noto Sans Thai', sans-serif; font-size: clamp(1.2rem, 2.8vh, 1.6rem); color: var(--accent); font-weight: 600; }
+  .buzz-rom  { font-size: .8rem; color: var(--faint); font-style: italic; }
+  .buzz-mean { color: var(--text); font-weight: 600; font-size: clamp(.92rem, 2vh, 1.05rem); }
+  .buzz-use  { color: var(--muted); font-size: .82rem; line-height: 1.5; }
 
   /* spice heat dots */
-  .heat-dots { display: flex; gap: 4px; margin-top: .25rem; }
-  .heat-dots span {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(201,164,76,0.2);
-    border: 1px solid rgba(201,164,76,0.3);
-  }
-  .heat-dots span.on { background: #c1121f; border-color: #c1121f; box-shadow: 0 0 4px #c1121f; }
+  .heat-dots { display: flex; gap: 4px; margin-top: .3rem; }
+  .heat-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+  .heat-dots span.on { background: var(--accent); box-shadow: 0 0 6px var(--accent-soft); }
 
   /* sweet % bar */
-  .sweet-bar-wrap { display: flex; flex-direction: column; gap: .15rem; margin-top: .25rem; }
-  .sweet-bar-track {
-    height: 5px; border-radius: 99px;
-    background: rgba(201,164,76,0.15); overflow: hidden;
-  }
-  .sweet-bar-fill {
-    height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, #c9a44c, #f5d98b);
-  }
+  .sweet-bar-wrap { display: flex; flex-direction: column; gap: .15rem; margin-top: .35rem; }
+  .sweet-bar-track { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .sweet-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
 
   /* fact box */
   .fact-box {
-    margin-top: 1rem;
-    background: rgba(201,164,76,0.07);
-    border-left: 3px solid rgba(201,164,76,0.55);
-    border-radius: 0 10px 10px 0;
-    padding: .7rem 1rem;
-    font-size: clamp(.85rem, 1.9vh, 1.05rem);
-    color: rgba(207,199,192,0.75);
-    line-height: 1.6;
+    margin-top: 1.1rem;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: .8rem 1.1rem;
+    font-size: clamp(.86rem, 1.9vh, 1.04rem);
+    color: var(--muted); line-height: 1.65;
   }
-  .fact-box strong { color: rgba(201,164,76,0.95); }
+  .fact-box strong { color: var(--accent); }
 
   /* phrase table */
-  .phrase-table { width: 100%; border-collapse: collapse; margin-top: .8rem; }
-  .phrase-table tr { border-bottom: 1px solid rgba(201,164,76,0.12); }
+  .phrase-table { width: 100%; border-collapse: collapse; margin-top: .9rem; }
+  .phrase-table tr { border-bottom: 1px solid var(--line); }
   .phrase-table tr:last-child { border-bottom: none; }
-  .phrase-table td {
-    padding: .6rem .5rem;
-    font-size: clamp(.9rem, 2vh, 1.1rem);
-    vertical-align: middle;
-  }
-  .phrase-table td:first-child {
-    color: #f0e6c8; font-weight: 600;
-    width: 50%; padding-right: 1rem;
-  }
-  .phrase-table td:nth-child(2) { color: rgba(201,164,76,0.7); width: 5%; text-align: center; font-size: 1rem; }
-  .phrase-table td:last-child { color: rgba(207,199,192,0.7); }
+  .phrase-table td { padding: .7rem .5rem; font-size: clamp(.9rem, 2vh, 1.1rem); vertical-align: middle; }
+  .phrase-table td:first-child { color: var(--text); font-weight: 600; width: 50%; padding-right: 1rem; }
+  .phrase-table td:nth-child(2) { color: var(--accent); width: 5%; text-align: center; }
+  .phrase-table td:last-child { color: var(--muted); }
 
   /* two-column food layout */
-  .food-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.4rem;
-  }
+  .food-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
   @media (max-width: 640px) { .food-cols { grid-template-columns: 1fr; } }
   .food-col-head {
-    font-size: clamp(.95rem, 2.1vh, 1.15rem);
-    font-family: 'Cinzel', serif;
-    color: rgba(201,164,76,0.85);
-    letter-spacing: 2px;
-    margin-bottom: .5rem;
-    display: flex; align-items: center; gap: .5rem;
+    font-size: clamp(.92rem, 2vh, 1.1rem);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text); letter-spacing: 1px; font-weight: 600;
+    margin-bottom: .6rem; display: flex; align-items: center; gap: .5rem;
   }
+  .food-col-head span { color: var(--faint); font-weight: 400; }
+
+  .emblem { font-size: clamp(2.4rem, 7vh, 4rem); line-height: 1; }
 </style>
 </head>
 
 <body>
-  <div class="bg-atmosphere"></div>
-  <div class="fog"></div>
-  <div class="vignette"></div>
+  <div class="bg-base"></div>
+  <div class="bg-grid"></div>
 
-  <div class="brandmark serif-title">THAI GHOSTS</div>
-  <div class="counter serif-title"><span id="cur">1</span> / <span id="total">12</span></div>
+  <div class="brandmark display">THAI <span>GHOSTS</span></div>
+  <div class="counter"><b id="cur">01</b> / <span id="total">12</span></div>
 
   <div class="deck" id="deck">
 
     <!-- ===== TITLE SLIDE ===== -->
     <section class="slide active" data-name="Intro">
-      <div class="text-center max-w-4xl">
-        <div class="emblem reveal">👻</div>
-        <h1 class="display blood-text reveal d1" style="font-size: clamp(2.6rem, 8vh, 5.5rem); margin: 1rem 0 0;">
-          Spirits of Thailand
+      <div class="max-w-4xl" style="text-align:left;">
+        <div class="kicker reveal">A Visual Field Guide</div>
+        <h1 class="display reveal d1" style="font-size: clamp(2.8rem, 9vh, 6rem); margin:1rem 0 0; line-height:1.02; letter-spacing:-1.5px; font-weight:700;">
+          Spirits of <span class="accent-text">Thailand</span>
         </h1>
-        <p class="thai reveal d2" style="font-size: clamp(1.2rem, 3.5vh, 2rem); color:#e7c9c9; margin-top:.4rem;">
+        <p class="thai reveal d2" style="font-size: clamp(1.1rem, 3vh, 1.7rem); color:var(--muted); margin-top:.6rem;">
           Thai Ghosts — Legends and Beliefs of Siam
         </p>
-        <div class="rule reveal d2" style="margin-left:auto;margin-right:auto;"></div>
-        <p class="reveal d3" style="font-size: clamp(1rem, 2.3vh, 1.3rem); color:#bdb2ab; max-width:42rem; margin:1rem auto 0; line-height:1.6;">
+        <div class="rule reveal d2"></div>
+        <p class="lead reveal d3" style="font-size: clamp(1rem, 2.3vh, 1.3rem); max-width:44rem; margin-top:1rem;">
           A journey through the most famous ghosts of Thai folklore — tales told for
-          generations to teach, to warn, and to thrill. Press the arrow keys to begin.
+          generations to teach, to warn, and to thrill. Use the arrow keys to begin.
         </p>
         <div class="reveal d4" style="margin-top:2rem;">
-          <span class="pill serif-title" style="padding:.5rem 1.4rem; border-radius:999px; letter-spacing:2px; font-size:.85rem;">
-            4 SPIRITS + FOOD CULTURE →
-          </span>
+          <span class="chip">4 Spirits + Food & Slang →</span>
         </div>
       </div>
     </section>
@@ -374,24 +329,24 @@
 
     <!-- ===== FOOD INTRO SLIDE ===== -->
     <section class="slide" data-name="FoodIntro">
-      <div class="text-center max-w-3xl">
-        <div class="emblem reveal" style="filter:drop-shadow(0 0 28px rgba(201,164,76,0.5))">🍜</div>
-        <h2 class="display gold-text reveal d1" style="font-size:clamp(2.4rem,7vh,4.5rem); margin-top:1rem; line-height:1.1;">
-          Ordering Food<br>in Thailand
+      <div class="max-w-3xl" style="text-align:left;">
+        <div class="kicker reveal">Part Two — Food Culture</div>
+        <h2 class="display reveal d1" style="font-size:clamp(2.4rem,8vh,5rem); margin-top:1rem; line-height:1.04; letter-spacing:-1px; font-weight:700;">
+          Ordering Food<br>in <span class="accent-text">Thailand</span>
         </h2>
-        <p class="thai reveal d2" style="font-size:clamp(1.2rem,3vh,1.7rem); color:#f0e6c8; margin-top:.4rem;">
+        <p class="thai reveal d2" style="font-size:clamp(1.1rem,3vh,1.6rem); color:var(--muted); margin-top:.5rem;">
           การสั่งอาหารในประเทศไทย
         </p>
-        <div class="gold-rule reveal d2" style="width:140px;margin:1rem auto;"></div>
-        <p class="reveal d3" style="font-size:clamp(1rem,2.2vh,1.25rem); color:#bdb2ab; max-width:38rem; margin:.8rem auto 0; line-height:1.65;">
+        <div class="rule reveal d2"></div>
+        <p class="lead reveal d3" style="font-size:clamp(1rem,2.2vh,1.25rem); max-width:40rem; margin-top:.8rem;">
           Thai street vendors and restaurants expect you to customise
           your order — knowing the right words turns a meal into a real
           cultural experience.
         </p>
-        <div class="reveal d4" style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem;">
-          <span class="food-section-label">🌶 SPICE LEVELS</span>
-          <span class="food-section-label">🍵 SWEETNESS LEVELS</span>
-          <span class="food-section-label">💬 KEY PHRASES</span>
+        <div class="reveal d4" style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.8rem;">
+          <span class="food-section-label">🌶 Spice Levels</span>
+          <span class="food-section-label">🍵 Sweetness Levels</span>
+          <span class="food-section-label">💬 Key Phrases</span>
         </div>
       </div>
     </section>
@@ -400,14 +355,14 @@
     <section class="slide" data-name="SpiceLevels">
       <div class="food-card reveal">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.3rem;flex-wrap:wrap;">
-          <span class="food-section-label">🌶 SPICE LEVELS — ระดับความเผ็ด</span>
+          <span class="food-section-label">🌶 Spice Levels — ระดับความเผ็ด</span>
         </div>
-        <div style="margin:.6rem 0 .2rem;">
-          <span style="font-size:clamp(.85rem,1.9vh,1rem);color:rgba(201,164,76,0.7);letter-spacing:1px;font-family:'Cinzel',serif;">EXAMPLE DISH</span>
+        <div style="margin:.7rem 0 .2rem;">
+          <span class="kicker" style="font-size:.7rem;">Example Dish</span>
         </div>
         <div style="margin-bottom:1rem;">
-          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:#f0e6c8;font-weight:700;">Basil Stir-Fry with Minced Pork</span>
-          <span style="font-family:'Noto Sans Thai',sans-serif;font-size:clamp(.9rem,2vh,1.1rem);color:rgba(207,199,192,0.55);margin-left:.6rem;">(กระเพราหมูสับ)</span>
+          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:var(--text);font-weight:700;font-family:'Space Grotesk',sans-serif;">Basil Stir-Fry with Minced Pork</span>
+          <span class="thai" style="font-size:clamp(.9rem,2vh,1.1rem);color:var(--faint);margin-left:.6rem;">(กระเพราหมูสับ)</span>
         </div>
         <div class="gold-rule"></div>
         <div class="vocab-grid">
@@ -453,19 +408,19 @@
     <section class="slide" data-name="SweetnessLevels">
       <div class="food-card reveal">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.3rem;flex-wrap:wrap;">
-          <span class="food-section-label">🍵 SWEETNESS LEVELS — ระดับความหวาน</span>
+          <span class="food-section-label">🍵 Sweetness Levels — ระดับความหวาน</span>
         </div>
-        <div style="margin:.6rem 0 .2rem;">
-          <span style="font-size:clamp(.85rem,1.9vh,1rem);color:rgba(201,164,76,0.7);letter-spacing:1px;font-family:'Cinzel',serif;">EXAMPLE DRINK</span>
+        <div style="margin:.7rem 0 .2rem;">
+          <span class="kicker" style="font-size:.7rem;">Example Drink</span>
         </div>
         <div style="margin-bottom:.9rem;">
-          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:#f0e6c8;font-weight:700;">Thai Iced Tea</span>
-          <span style="font-family:'Noto Sans Thai',sans-serif;font-size:clamp(.9rem,2vh,1.1rem);color:rgba(207,199,192,0.55);margin-left:.6rem;">(ชาไทย)</span>
+          <span style="font-size:clamp(1.3rem,3.2vh,2rem);color:var(--text);font-weight:700;font-family:'Space Grotesk',sans-serif;">Thai Iced Tea</span>
+          <span class="thai" style="font-size:clamp(.9rem,2vh,1.1rem);color:var(--faint);margin-left:.6rem;">(ชาไทย)</span>
         </div>
         <div class="gold-rule"></div>
         <div class="food-cols">
           <div>
-            <div class="food-col-head">🗣 Word System <span style="font-family:'Noto Sans Thai',sans-serif;font-size:.9rem;">(ร้านข้างทาง)</span></div>
+            <div class="food-col-head">🗣 Word System <span class="thai">(ร้านข้างทาง)</span></div>
             <div class="vocab-grid" style="grid-template-columns:1fr;">
               <div class="vocab-item">
                 <div class="v-en">No sugar</div>
@@ -490,7 +445,7 @@
             </div>
           </div>
           <div>
-            <div class="food-col-head">📊 % System <span style="font-family:'Noto Sans Thai',sans-serif;font-size:.9rem;">(ร้านชานม / บอบาชา)</span></div>
+            <div class="food-col-head">📊 % System <span class="thai">(ร้านชานม / บอบาชา)</span></div>
             <div class="vocab-grid" style="grid-template-columns:1fr;">
               <div class="vocab-item">
                 <div class="v-en">No sugar at all — 0%</div>
@@ -521,59 +476,118 @@
     <section class="slide" data-name="KeyPhrases">
       <div class="food-card reveal">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap;">
-          <span class="food-section-label">💬 KEY ORDERING PHRASES</span>
+          <span class="food-section-label">💬 Key Ordering Phrases</span>
         </div>
         <div class="gold-rule"></div>
         <table class="phrase-table">
           <tr>
-            <td>"One ___ please" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(most common opener)</span></td>
+            <td>"One ___ please" &nbsp;<span style="font-size:.85rem;color:var(--faint);">(most common opener)</span></td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ขอ ___ หนึ่งที่ครับ/ค่ะ</td>
+            <td class="thai" style="color:var(--muted);">ขอ ___ หนึ่งที่ครับ/ค่ะ</td>
           </tr>
           <tr>
             <td>"Can I have it a little less spicy?"</td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">เผ็ดน้อยได้ไหม</td>
+            <td class="thai" style="color:var(--muted);">เผ็ดน้อยได้ไหม</td>
           </tr>
           <tr>
             <td>"No vegetables please"</td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ไม่เอาผัก</td>
+            <td class="thai" style="color:var(--muted);">ไม่เอาผัก</td>
           </tr>
           <tr>
-            <td>"Please bag it" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(takeaway)</span></td>
+            <td>"Please bag it" &nbsp;<span style="font-size:.85rem;color:var(--faint);">(takeaway)</span></td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">ใส่ถุงด้วยครับ/ค่ะ</td>
+            <td class="thai" style="color:var(--muted);">ใส่ถุงด้วยครับ/ค่ะ</td>
           </tr>
           <tr>
             <td>"How much is it?"</td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">เท่าไหร่ครับ/ค่ะ</td>
+            <td class="thai" style="color:var(--muted);">เท่าไหร่ครับ/ค่ะ</td>
           </tr>
           <tr>
-            <td>"It's delicious!" &nbsp;<span style="font-size:.85rem;color:rgba(201,164,76,0.6);">(vendors love this 😄)</span></td>
+            <td>"It's delicious!" &nbsp;<span style="font-size:.85rem;color:var(--faint);">(vendors love this 😄)</span></td>
             <td>→</td>
-            <td style="font-family:'Noto Sans Thai',sans-serif;color:rgba(207,199,192,0.6);">อร่อยมากครับ/ค่ะ</td>
+            <td class="thai" style="color:var(--muted);">อร่อยมากครับ/ค่ะ</td>
           </tr>
         </table>
-        <div class="fact-box" style="margin-top:1rem;">
+        <div class="fact-box" style="margin-top:1.1rem;">
           📌 <strong>Tip:</strong> Men end sentences with <strong>ครับ</strong> (krap) and women with <strong>ค่ะ</strong> (kha) — these are polite particles that show respect and are always appreciated.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THAI BUZZWORDS / SLANG SLIDE ===== -->
+    <section class="slide" data-name="Buzzwords">
+      <div class="food-card reveal">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.3rem;flex-wrap:wrap;">
+          <span class="food-section-label">🔥 Thai Buzzwords — คำฮิตวัยรุ่น</span>
+        </div>
+        <p class="lead" style="font-size:clamp(.9rem,2vh,1.05rem);margin:.4rem 0 0;max-width:46rem;">
+          Trendy Thai slang you'll hear online and on the street — drop one of these
+          and locals will instantly know you're tuned in.
+        </p>
+        <div class="gold-rule"></div>
+        <div class="buzz-grid">
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">ปัง</span><span class="buzz-rom">pang</span></div>
+            <div class="buzz-mean">Amazing / On point</div>
+            <div class="buzz-use">Praise for anything stunning — an outfit, a meal, a performance.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">ฟิน</span><span class="buzz-rom">fin</span></div>
+            <div class="buzz-mean">Blissful / Loving it</div>
+            <div class="buzz-use">That pure happy feeling — great food, music, or a perfect moment.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">แซ่บ</span><span class="buzz-rom">zaap</span></div>
+            <div class="buzz-mean">Deliciously spicy / Hot</div>
+            <div class="buzz-use">Originally Isan for tasty-spicy; now also means someone looks fierce.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">เทพ</span><span class="buzz-rom">thep</span></div>
+            <div class="buzz-mean">Godlike / Pro</div>
+            <div class="buzz-use">Someone insanely skilled — "You're so thep at this game!"</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">ตัวแม่</span><span class="buzz-rom">tua-mae</span></div>
+            <div class="buzz-mean">The Queen / Icon</div>
+            <div class="buzz-use">The top-tier, trendsetting person everyone looks up to.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">หมาไม่แดก</span><span class="buzz-rom">maa-mai-daek</span></div>
+            <div class="buzz-mean">A total mess / Wretched</div>
+            <div class="buzz-use">Lit. "even dogs won't eat it" — a miserable, chaotic, rock-bottom situation.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">ชิล</span><span class="buzz-rom">chill</span></div>
+            <div class="buzz-mean">Relaxed / Easygoing</div>
+            <div class="buzz-use">From English "chill" — laid-back vibes, no stress.</div>
+          </div>
+          <div class="buzz-item">
+            <div class="buzz-head"><span class="buzz-thai">สายเปย์</span><span class="buzz-rom">sai-pay</span></div>
+            <div class="buzz-mean">The big spender</div>
+            <div class="buzz-use">Someone who generously pays for friends or a partner.</div>
+          </div>
+        </div>
+        <div class="fact-box">
+          📌 <strong>Heads up:</strong> Slang is casual — perfect with friends, but stick to polite phrases (<strong>ครับ/ค่ะ</strong>) with elders, vendors, and at work.
         </div>
       </div>
     </section>
 
     <!-- ===== CLOSING SLIDE ===== -->
     <section class="slide" data-name="End">
-      <div class="text-center max-w-3xl">
-        <div class="emblem reveal">🙏</div>
-        <h2 class="display blood-text reveal d1" style="font-size: clamp(2.4rem, 7vh, 4.5rem); margin-top:1rem;">
-          Thank You
+      <div class="max-w-3xl" style="text-align:left;">
+        <div class="kicker reveal">End of Guide</div>
+        <h2 class="display reveal d1" style="font-size: clamp(2.6rem, 8vh, 5rem); margin-top:1rem; letter-spacing:-1px; font-weight:700;">
+          Thank <span class="accent-text">You</span>
         </h2>
-        <p class="thai reveal d2" style="font-size:1.6rem; color:#e7c9c9; margin-top:.3rem;">
+        <p class="thai reveal d2" style="font-size:1.4rem; color:var(--muted); margin-top:.4rem;">
           ขอบคุณครับ / Khob Khun Krap
         </p>
-        <div class="rule reveal d2" style="margin-left:auto;margin-right:auto;"></div>
-        <p class="reveal d3" style="font-size:1.15rem; color:#bdb2ab; line-height:1.7; margin-top:1rem;">
+        <div class="rule reveal d2"></div>
+        <p class="lead reveal d3" style="font-size:1.15rem; margin-top:1rem; max-width:42rem;">
           From ancient spirits to street food stalls — Thai culture is rich,
           layered, and full of stories waiting to be discovered.
           <br />Thank you for exploring Thailand with us. 🇹🇭
@@ -592,7 +606,7 @@
 <script>
   /* ============================================================
      SHADOW-PUPPET STYLE SVG ART (drawn, offline, no copyright)
-     Each "art" is the inner silhouette; frame + red moon are added.
+     Each "art" is the inner silhouette.
   ============================================================ */
   const art = {
     maeNak: `
@@ -723,14 +737,6 @@
       desc:"The graceful ghost of a Thai classical dancer. Adorned in a glittering costume and a tall, pointed golden crown (chada), with her fingers bent impossibly far back, she performs the slow, elegant movements of traditional Thai dance — alone on an empty stage or near a shrine in the dead of night, to music only the dead can hear. Beautiful yet eerie, she is said to be a performer whose love for the dance kept her soul bound to the stage long after death." }
   ];
 
-  /* corner flourish SVG (one shape, mirrored by CSS) */
-  const cornerSVG = `<svg viewBox="0 0 46 46"><path d="M4 4 H22 M4 4 V22 M4 4 q26 0 36 36 M13 5 q0 9 -8 9 M5 13 q9 0 9 8"/></svg>`;
-  const corners = `
-    <div class="corner tl">${cornerSVG}</div>
-    <div class="corner tr">${cornerSVG}</div>
-    <div class="corner bl">${cornerSVG}</div>
-    <div class="corner br">${cornerSVG}</div>`;
-
   /* ============================================================
      BUILD GHOST SLIDES
   ============================================================ */
@@ -754,21 +760,20 @@
       ? `<p class="media-note reveal d4">${g.credit}</p>`
       : '';
 
-    const cardClass = 'portrait-card';
     s.innerHTML = `
-      <div class="${cardClass}">
+      <div class="portrait-card">
         <div class="frame reveal">
-          ${corners}
           ${media}
-          <div class="nameplate serif-title">No. ${g.no}</div>
+          <div class="nameplate">NO. ${g.no}</div>
         </div>
 
         <div class="info">
-          <span class="pill serif-title reveal d1" style="display:inline-block; padding:.3rem 1.1rem; border-radius:999px; font-size:.78rem; letter-spacing:2px; color:#e7c9c9; text-transform:uppercase;">${g.tag}</span>
-          <h2 class="serif-title blood-text reveal d2" style="font-size:clamp(2.4rem,7vh,4.2rem); margin:.6rem 0 0; line-height:1;">${g.en}</h2>
-          <p class="thai reveal d2" style="font-size:clamp(1.3rem,3.6vh,2rem); color:#e7c9c9; margin:.3rem 0 0;">(${g.th})</p>
+          <div class="ghost-no reveal d1">${g.no}</div>
+          <span class="kicker reveal d1">${g.tag}</span>
+          <h2 class="ghost-name reveal d2">${g.en}</h2>
+          <p class="thai ghost-thai reveal d2">(${g.th})</p>
           <div class="rule reveal d3"></div>
-          <p class="reveal d3" style="font-size:clamp(1rem,2.3vh,1.3rem); color:#cdc3bc; line-height:1.7;">${g.desc}</p>
+          <p class="ghost-desc reveal d3">${g.desc}</p>
           ${note}
         </div>
       </div>
@@ -782,7 +787,7 @@
   const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
   let index = 0;
-  document.getElementById('total').textContent = total;
+  document.getElementById('total').textContent = String(total).padStart(2, '0');
 
   const progress = document.getElementById('progress');
   slides.forEach((_, i) => {
@@ -795,12 +800,10 @@
 
   function render() {
     slides.forEach((s, i) => {
-      s.classList.remove('active', 'prev');
-      if (i === index) s.classList.add('active');
-      else if (i < index) s.classList.add('prev');
+      s.classList.toggle('active', i === index);
     });
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
-    document.getElementById('cur').textContent = index + 1;
+    document.getElementById('cur').textContent = String(index + 1).padStart(2, '0');
   }
   function goTo(i) { index = Math.max(0, Math.min(total - 1, i)); render(); }
   function next() { if (index < total - 1) goTo(index + 1); }
